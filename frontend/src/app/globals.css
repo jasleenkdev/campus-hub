@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+/*
+ * The scaffold shipped an unlayered `body { background; color; font-family }`
+ * rule. Unlayered CSS outranks Tailwind's layered utilities, so it silently
+ * overrode `bg-slate-50`, `text-slate-900` and `font-sans` — the Geist fonts
+ * were loaded but never applied. Theme values belong in @theme, and base
+ * styling in @layer base, so utilities can still win.
+ */
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  /* A single, consistent focus ring everywhere, keyboard-only. */
+  :focus-visible {
+    outline: 2px solid var(--color-sky-500);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+
+  ::selection {
+    background-color: var(--color-sky-200);
+    color: var(--color-sky-950);
+  }
+
+  /* Tabular figures for the dashboard counts and any table numerics. */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  @layer base {
+    ::selection {
+      background-color: var(--color-sky-800);
+      color: var(--color-sky-50);
+    }
+  }
+}
+
+/* Respect a reduced-motion preference: keep the spinner legible but calm. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-spin {
+    animation: spin 1.4s linear infinite !important;
+  }
+}
